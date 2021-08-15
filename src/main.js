@@ -1,8 +1,9 @@
-const axios = require('axios');
-
-class Slash {
-    constructor(client, bot_token, bot_id) {
-        this.request = {
+class Slash
+{
+    constructor(client, bot_token, bot_id)
+    {
+        this.request =
+        {
             'name': '',
             'description': ''
         };
@@ -10,7 +11,8 @@ class Slash {
         this.tokenPrefix = 'Bot ';
         this.authToken = bot_token
         this.bot_id = bot_id;
-        this.endpoints = {
+        this.endpoints =
+        {
             ENDPOINT: `/applications/${this.bot_id}`,
             GUILD_ONLY: '/guilds/',
             COMMANDS: '/commands',
@@ -22,11 +24,9 @@ class Slash {
      * @param {String} name - Command Name
      * @return {Promise<SlashCommand>}
      */
-    async setCommandName(name) {
-        return new Promise(async (resolve) => {
-            this.request.name = name;
-            resolve(this);
-        })
+    async setCommandName(name)
+    {
+        this.request.name = name;
     }
 
     /**
@@ -34,11 +34,9 @@ class Slash {
      * @param {String} description - command description
      * @return {Promise<SlashCommand>}
      */
-    async setCommandDescription(description) {
-        return new Promise(async (resolve) => {
-            this.request.description = description;
-            resolve(this);
-        })
+    async setCommandDescription(description)
+    {
+        this.request.description = description;
     }
 
     /**
@@ -52,33 +50,36 @@ class Slash {
      * @param {int} type
      * @return {Promise<SlashCommand|*>}
      */
-    async addOption(name, description, required = true, type = 3, choices = []) {
-        return new Promise(async (resolve, reject) => {
-            if (name === '') {
-                reject('Option Name is undefined!');
-            } else if (description === '') {
-                reject('Option Description is undefined!')
-            }
+    async addOption(name, description, required = true, type = 3, choices = [])
+    {
+        if (name === '')
+        {
+            return 'Option Name is undefined!';
+        }
+        else if (description === '')
+        {
+            return 'Option Description is undefined!';
+        }
             
-            if (choices.length >= 1)  {
-                this.options.push({
-                    'name': name,
-                    'description': description,
-                    'type': type,
-                    'required': required,
-                    'choices': choices
-                })
-            }
-            else {
-                this.options.push({
-                    'name': name,
-                    'description': description,
-                    'type': type,
-                    'required': required,
-                })
-            }
-            resolve(this);
-        })
+        if (choices.length >= 1)
+        {
+            this.options.push({
+                'name': name,
+                'description': description,
+                'type': type,
+                'required': required,
+                'choices': choices
+            })
+        }
+        else
+        {
+            this.options.push({
+                'name': name,
+                'description': description,
+                'type': type,
+                'required': required,
+            });
+        }
     }
 
     /**
@@ -89,36 +90,41 @@ class Slash {
      * @param {array} options
      * @return {Promise<SlashCommand|*>}
      */
-    async addSubcommand(name, description, type = 3, options = []) {
-        return new Promise(async (resolve, reject) => {
-            if (name === '') {
-                reject('Option Name is undefined!');
-            } else if (description === '') {
-                reject('Option Description is undefined!')
-            }
+    async addSubcommand(name, description, type = 3, options = [])
+    {
+        if (name === '')
+        {
+            return 'Option Name is undefined!';
+        }
+        else if (description === '')
+        {
+            return 'Option Description is undefined!';
+        }
             
-            if (options.length < 1)  {
-                this.options.push({
-                    'name': name,
-                    'description': description,
-                    'type': type,
-                })
-            }
-            else {
-                this.options.push({
-                    'name': name,
-                    'description': description,
-                    'type': type,
-                    'options': options,
-                })
-            }
-            resolve(this);
-        })
+        if (options.length < 1)
+        {
+            this.options.push({
+                'name': name,
+                'description': description,
+                'type': type,
+            });
+        }
+        else
+        {
+            this.options.push({
+                'name': name,
+                'description': description,
+                'type': type,
+                'options': options,
+            });
+        }
     }
 }
 
-class Create extends Slash {
-    constructor(client, bot_token, bot_id) {
+class Create extends Slash
+{
+    constructor(client, bot_token, bot_id)
+    {
         super(client, bot_token, bot_id)
     }
 
@@ -127,38 +133,51 @@ class Create extends Slash {
      * @param {String} guild_id
      * @return {undefined}
      */
-    async createCommand(guild_id = '') {
-        return new Promise(async (resolve, reject) => {
-            let url;
-            if (guild_id === '') {
-                url = this.endpoints.ENDPOINT + this.endpoints.COMMANDS;
-            } else {
-                url = this.endpoints.ENDPOINT + this.endpoints.GUILD_ONLY + guild_id + this.endpoints.COMMANDS;
-            }
-            if (this.request.name === '') {
-                reject('Command Name is undefined ');
-            } else if (this.request.description === '') {
-                reject('Command Description is undefined ');
-            } else {
-                let json;
-                if (!this.options[0]) {
-                    json = this.request;
-                } else {
-                    json = {
-                        'name': this.request.name,
-                        'description': this.request.description,
-                        'options': this.options
-                    }
-                }
+    async createCommand(guild_id = '')
+    {
+        let url;
+        if (guild_id === '')
+        {
+            url = this.endpoints.ENDPOINT + this.endpoints.COMMANDS;
+        }
+        else
+        {
+            url = this.endpoints.ENDPOINT + this.endpoints.GUILD_ONLY + guild_id + this.endpoints.COMMANDS;
+        }
 
-                this.client.requestHandler.request('POST', url, true, JSON.parse(JSON.stringify(json)));
+        if (this.request.name === '')
+        {
+            return 'Command Name is undefined ';
+        }
+        else if (this.request.description === '')
+        {
+            return 'Command Description is undefined ';
+        }
+        else
+        {
+            let json;
+            if (!this.options[0])
+            {
+                json = this.request;
             }
-        })
+            else
+            {
+                json = {
+                    'name': this.request.name,
+                    'description': this.request.description,
+                    'options': this.options
+                }
+            }
+
+            this.client.requestHandler.request('POST', url, true, JSON.parse(JSON.stringify(json)));
+        }
     }
 }
 
-class Update extends Slash {
-    constructor(client, bot_token, bot_id, command_id) {
+class Update extends Slash
+{
+    constructor(client, bot_token, bot_id, command_id)
+    {
         super(client, bot_token, bot_id);
         this.command_id = command_id;
     }
@@ -168,38 +187,51 @@ class Update extends Slash {
      * @param {String} guild_id
      * @return {undefined}
      */
-    async updateCommand(guild_id = '') {
-        return new Promise(async (resolve, reject) => {
-            let url;
-            if (guild_id === '') {
-                url = this.endpoints.ENDPOINT + this.endpoints.COMMANDS + '/' + this.command_id;
-            } else {
-                url = this.endpoints.ENDPOINT + this.endpoints.GUILD_ONLY + guild_id + this.endpoints.COMMANDS + '/' + this.command_id;
-            }
-            if (this.request.name === '') {
-                reject('Command Name is undefined ');
-            } else if (this.request.description === '') {
-                reject('Command Description is undefined ');
-            } else {
-                let json;
-                if (!this.options[0]) {
-                    json = this.request;
-                } else {
-                    json = {
-                        'name': this.request.name,
-                        'description': this.request.description,
-                        'options': this.options
-                    }
-                }
+    async updateCommand(guild_id = '')
+    {
+        let url;
+        if (guild_id === '')
+        {
+            url = this.endpoints.ENDPOINT + this.endpoints.COMMANDS + '/' + this.command_id;
+        }
+        else
+        {
+            url = this.endpoints.ENDPOINT + this.endpoints.GUILD_ONLY + guild_id + this.endpoints.COMMANDS + '/' + this.command_id;
+        }
 
-                this.client.requestHandler.request('PATCH', url, true, JSON.parse(JSON.stringify(json)));
+        if (this.request.name === '')
+        {
+            return 'Command Name is undefined';
+        }
+        else if (this.request.description === '')
+        {
+            return 'Command Description is undefined';
+        }
+        else
+        {
+            let json;
+            if (!this.options[0])
+            {
+                json = this.request;
             }
-        })
+            else
+            {
+                json = {
+                    'name': this.request.name,
+                    'description': this.request.description,
+                    'options': this.options
+                }
+            }
+
+            this.client.requestHandler.request('PATCH', url, true, JSON.parse(JSON.stringify(json)));
+        }
     }
 }
 
-class Delete {
-    constructor(client, bot_token, bot_id) {
+class Delete
+{
+    constructor(client, bot_token, bot_id)
+    {
         this.tokenPrefix = 'Bot ';
         this.authToken = bot_token
         this.bot_id = bot_id;
@@ -217,46 +249,54 @@ class Delete {
      * @param {String} guild_id
      * @return {undefined}
      */
-    async deleteCommand(command_id, guild_id = '') {
-        return new Promise(async (resolve) => {
-            let url;
-            if (guild_id === '') {
-                url = this.endpoints.ENDPOINT + this.endpoints.COMMANDS;
-            } else {
-                url = this.endpoints.ENDPOINT + this.endpoints.GUILD_ONLY + guild_id + this.endpoints.COMMANDS + '/' + command_id;
-            }
+    async deleteCommand(command_id, guild_id = '')
+    {
+        let url;
+        if (guild_id === '')
+        {
+            url = this.endpoints.ENDPOINT + this.endpoints.COMMANDS;
+        }
+        else
+        {
+            url = this.endpoints.ENDPOINT + this.endpoints.GUILD_ONLY + guild_id + this.endpoints.COMMANDS + '/' + command_id;
+        }
 
-            this.client.requestHandler.request('DELETE', url, true, JSON.parse(JSON.stringify(json)));
-        });
+        this.client.requestHandler.request('DELETE', url, true, JSON.parse(JSON.stringify(json)));
     }
 }
 
-class GetAll {
-    constructor(client, bot_token, bot_id, guild_id = '') {
-        return new Promise(async resolve => {
-            this.tokenPrefix = ('Bot') + ' ';
-            this.authToken = bot_token
-            this.bot_id = bot_id;
-            this.client = client;
-            this.endpoints = {
-                ENDPOINT: `/applications/${this.bot_id}`,
-                GUILD_ONLY: '/guilds/',
-                COMMANDS: '/commands'
-            }
-            let url;
-            if (guild_id === '') {
-                url = this.endpoints.ENDPOINT + this.endpoints.COMMANDS;
-            } else {
-                url = this.endpoints.ENDPOINT + this.endpoints.GUILD_ONLY + guild_id + this.endpoints.COMMANDS;
-            }
+class GetAll
+{
+    constructor(client, bot_token, bot_id, guild_id = '')
+    {
+        this.tokenPrefix = ('Bot') + ' ';
+        this.authToken = bot_token
+        this.bot_id = bot_id;
+        this.client = client;
+        this.endpoints = {
+            ENDPOINT: `/applications/${this.bot_id}`,
+            GUILD_ONLY: '/guilds/',
+            COMMANDS: '/commands'
+        }
 
-            this.client.requestHandler.request('GET', url, true, JSON.parse(JSON.stringify(json)));
-        });
+        let url;
+        if (guild_id === '')
+        {
+            url = this.endpoints.ENDPOINT + this.endpoints.COMMANDS;
+        }
+        else
+        {
+            url = this.endpoints.ENDPOINT + this.endpoints.GUILD_ONLY + guild_id + this.endpoints.COMMANDS;
+        }
+
+        this.client.requestHandler.request('GET', url, true, JSON.parse(JSON.stringify(json)));
     }
 }
 
-class Interaction {
-    constructor(client, data, bot_token, bot_id) {
+class Interaction
+{
+    constructor(client, data, bot_token, bot_id)
+    {
         this.authToken = bot_token;
         this.tokenPrefix = 'Bot ';
         this.bot_id = bot_id;
@@ -267,24 +307,25 @@ class Interaction {
         };
         this.client = client;
 
-        this.packet = Object.assign({}, data, {
-            reply: async (content, type = 4) => {
-                return new Promise(async (resolve) => {
+        this.packet = Object.assign({}, data,
+            {
+                reply: async (content, type = 4) =>
+                {
                     const json = {
                         'type': type,
                         'data': JSON.parse(JSON.stringify(content))
                     }
 
                     this.client.requestHandler.request('POST', this.endpoints.CALLBACK, true, JSON.parse(JSON.stringify(json)));
-                });
-            }
+                }
         });
 
         return this.packet;
     }
 }
 
-module.exports = {
+module.exports =
+{
     Create,
     Update,
     Delete,
