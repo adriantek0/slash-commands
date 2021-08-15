@@ -1,7 +1,7 @@
 const axios = require('axios');
 
 class Slash {
-    constructor(bot_token, bot_id) {
+    constructor(client, bot_token, bot_id) {
         this.request = {
             'name': '',
             'description': ''
@@ -11,7 +11,7 @@ class Slash {
         this.authToken = bot_token
         this.bot_id = bot_id;
         this.endpoints = {
-            ENDPOINT: `https://discord.com/api/v9/applications/${this.bot_id}`,
+            ENDPOINT: `/applications/${this.bot_id}`,
             GUILD_ONLY: '/guilds/',
             COMMANDS: '/commands',
         }
@@ -117,8 +117,8 @@ class Slash {
 }
 
 class Create extends Slash {
-    constructor(bot_token, bot_id) {
-        super(bot_token, bot_id)
+    constructor(client, bot_token, bot_id) {
+        super(client, bot_token, bot_id)
     }
 
     /**
@@ -150,14 +150,16 @@ class Create extends Slash {
                     }
                 }
 
-                await axios(url, {
+                /*await axios(url, {
                     method: 'post',
                     data: JSON.parse(JSON.stringify(json)),
                     headers: {
                         'Authorization': `${this.tokenPrefix}${this.authToken}`,
                         'Content-Type': 'application/json'
                     },
-                })
+                })*/
+
+                client.requestHandler.request('POST', url, true, JSON.parse(JSON.stringify(json)));
             }
         })
     }
@@ -343,5 +345,6 @@ module.exports = {
     Update,
     Delete,
     GetAll,
-    Interaction
+    Interaction,
+    Client: Client
 };
