@@ -151,24 +151,15 @@ class Create extends Slash {
                     }
                 }
 
-                /*await axios(url, {
-                    method: 'post',
-                    data: JSON.parse(JSON.stringify(json)),
-                    headers: {
-                        'Authorization': `${this.tokenPrefix}${this.authToken}`,
-                        'Content-Type': 'application/json'
-                    },
-                })*/
-
-                this.client.requestHandler.request('POST', url, true, JSON.parse(JSON.stringify(json))).then(console.log('sas'))
+                this.client.requestHandler.request('POST', url, true, JSON.parse(JSON.stringify(json)));
             }
         })
     }
 }
 
 class Update extends Slash {
-    constructor(bot_token, bot_id, command_id) {
-        super(bot_token, bot_id);
+    constructor(client, bot_token, bot_id, command_id) {
+        super(client, bot_token, bot_id);
         this.command_id = command_id;
     }
 
@@ -201,26 +192,20 @@ class Update extends Slash {
                     }
                 }
 
-                await axios(url, {
-                    method: 'patch',
-                    data: JSON.parse(JSON.stringify(json)),
-                    headers: {
-                        'Authorization': `${this.tokenPrefix}${this.authToken}`,
-                        'Content-Type': 'application/json'
-                    },
-                })
+                this.client.requestHandler.request('PATCH', url, true, JSON.parse(JSON.stringify(json)));
             }
         })
     }
 }
 
 class Delete {
-    constructor(bot_token, bot_id) {
+    constructor(client, bot_token, bot_id) {
         this.tokenPrefix = 'Bot ';
         this.authToken = bot_token
         this.bot_id = bot_id;
+        this.client = client;
         this.endpoints = {
-            ENDPOINT: `https://discord.com/api/v9/applications/${this.bot_id}`,
+            ENDPOINT: `/applications/${this.bot_id}`,
             GUILD_ONLY: '/guilds/',
             COMMANDS: '/commands'
         }
@@ -240,28 +225,21 @@ class Delete {
             } else {
                 url = this.endpoints.ENDPOINT + this.endpoints.GUILD_ONLY + guild_id + this.endpoints.COMMANDS + '/' + command_id;
             }
-            
-            await axios(url, {
-                method: 'delete',
-                data: JSON.parse(JSON.stringify(json)),
-                headers: {
-                    'Authorization': `${this.tokenPrefix}${this.authToken}`,
-                    'Content-Type': 'application/json'
-                },
-            })
 
-        })
+            this.client.requestHandler.request('DELETE', url, true, JSON.parse(JSON.stringify(json)));
+        });
     }
 }
 
 class GetAll {
-    constructor(bot_token, bot_id, guild_id = '') {
+    constructor(client, bot_token, bot_id, guild_id = '') {
         return new Promise(async resolve => {
             this.tokenPrefix = ('Bot') + ' ';
             this.authToken = bot_token
             this.bot_id = bot_id;
+            this.client = client;
             this.endpoints = {
-                ENDPOINT: `https://discord.com/api/v9/applications/${this.bot_id}`,
+                ENDPOINT: `/applications/${this.bot_id}`,
                 GUILD_ONLY: '/guilds/',
                 COMMANDS: '/commands'
             }
@@ -271,53 +249,26 @@ class GetAll {
             } else {
                 url = this.endpoints.ENDPOINT + this.endpoints.GUILD_ONLY + guild_id + this.endpoints.COMMANDS;
             }
-                
-            await axios(url, {
-                method: 'get',
-                data: JSON.parse(JSON.stringify(json)),
-                headers: {
-                    'Authorization': `${this.tokenPrefix}${this.authToken}`,
-                    'Content-Type': 'application/json'
-                },
-            })
-        })
+
+            this.client.requestHandler.request('GET', url, true, JSON.parse(JSON.stringify(json)));
+        });
     }
 }
 
 class Interaction {
-    constructor(data, bot_token, bot_id) {
+    constructor(client, data, bot_token, bot_id) {
         this.authToken = bot_token;
         this.tokenPrefix = 'Bot ';
         this.bot_id = bot_id;
         this.endpoints = {
-            CALLBACK: `https://discord.com/api/v9/interactions/${data.id}/${data.token}/callback`,
-            MESSAGES: `https://discord.com/api/v9/webhooks/${this.bot_id}/${data.token}/messages/@original`,
-            FOLLOWUP: `https://discord.com/api/v9/webhooks/${this.bot_id}/${data.token}`
+            CALLBACK: `/interactions/${data.id}/${data.token}/callback`,
+            MESSAGES: `/webhooks/${this.bot_id}/${data.token}/messages/@original`,
+            FOLLOWUP: `/webhooks/${this.bot_id}/${data.token}`
         };
-        this.packet = {
-            version: data.version,
-            type: data.type,
-            member: data.member,
-            user: data.member.user,
-            interaction: {
-                id: data.id,
-                token: data.token,
-                guild_id: data.guild_id,
-                channel_id: data.channel_id,
-            },
-            command: {
-                id: data.data.id,
-                options: data.data.options,
-                name: data.data.name,
-                guild_id: data.guild_id,
-                channel_id: data.channel_id,
-            },
+        this.client = client;
 
-            /**
-             * @param {String} content
-             * @param {number} type
-             * @return {undefined}
-             */
+        this.packet = {
+            data: data,
             reply: async (content, type = 4) => {
                 return new Promise(async (resolve) => {
                     const json = {
@@ -325,17 +276,10 @@ class Interaction {
                         'data': JSON.parse(JSON.stringify(content))
                     }
 
-                    await axios(this.endpoints.CALLBACK, {
-                        method: 'post',
-                        data: JSON.parse(JSON.stringify(json)),
-                        headers: {
-                            'Authorization': `${this.tokenPrefix}${this.authToken}`,
-                            'Content-Type': 'application/json'
-                        },
-                    })
-                })
+                    this.client.requestHandler.request('POST', this.endpoints.CALLBACK, true, JSON.parse(JSON.stringify(json)));
+                });
             }
-        };
+        }
 
         return this.packet;
     }
