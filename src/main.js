@@ -20,36 +20,16 @@ class Slash
         this.client = client;
     }
 
-    /**
-     * @param {String} name - Command Name
-     * @return {Promise<SlashCommand>}
-     */
     async setCommandName(name)
     {
         this.request.name = name;
     }
 
-    /**
-     *
-     * @param {String} description - command description
-     * @return {Promise<SlashCommand>}
-     */
     async setCommandDescription(description)
     {
         this.request.description = description;
     }
 
-    /**
-     *
-     * @param {String} name
-     * @param {String} description
-     * @param {boolean} required
-     * @param {Array<Object>} choices
-     * @param {String} choices.name
-     * @param {String} choices.value
-     * @param {int} type
-     * @return {Promise<SlashCommand|*>}
-     */
     async addOption(name, description, required = true, type = 3, choices = [])
     {
         if (name === '')
@@ -82,14 +62,6 @@ class Slash
         }
     }
 
-    /**
-     *
-     * @param {String} name
-     * @param {String} description
-     * @param {int} type
-     * @param {array} options
-     * @return {Promise<SlashCommand|*>}
-     */
     async addSubcommand(name, description, type = 3, options = [])
     {
         if (name === '')
@@ -128,11 +100,6 @@ class Create extends Slash
         super(client, bot_token, bot_id)
     }
 
-    /**
-     *
-     * @param {String} guild_id
-     * @return {undefined}
-     */
     async createCommand(guild_id = '')
     {
         let url;
@@ -182,11 +149,6 @@ class Update extends Slash
         this.command_id = command_id;
     }
 
-    /**
-     *
-     * @param {String} guild_id
-     * @return {undefined}
-     */
     async updateCommand(guild_id = '')
     {
         let url;
@@ -236,19 +198,14 @@ class Delete
         this.authToken = bot_token
         this.bot_id = bot_id;
         this.client = client;
-        this.endpoints = {
+        this.endpoints =
+        {
             ENDPOINT: `/applications/${this.bot_id}`,
             GUILD_ONLY: '/guilds/',
             COMMANDS: '/commands'
         }
     }
 
-    /**
-     *
-     * @param {String} command_id
-     * @param {String} guild_id
-     * @return {undefined}
-     */
     async deleteCommand(command_id, guild_id = '')
     {
         let url;
@@ -261,7 +218,7 @@ class Delete
             url = this.endpoints.ENDPOINT + this.endpoints.GUILD_ONLY + guild_id + this.endpoints.COMMANDS + '/' + command_id;
         }
 
-        this.client.requestHandler.request('DELETE', url, true, JSON.parse(JSON.stringify(json)));
+        this.client.requestHandler.request('DELETE', url, true);
     }
 }
 
@@ -269,18 +226,23 @@ class GetAll
 {
     constructor(client, bot_token, bot_id, guild_id = '')
     {
-        this.tokenPrefix = ('Bot') + ' ';
+        this.tokenPrefix = 'Bot ';
         this.authToken = bot_token
         this.bot_id = bot_id;
         this.client = client;
-        this.endpoints = {
+        this.endpoints =
+        {
             ENDPOINT: `/applications/${this.bot_id}`,
             GUILD_ONLY: '/guilds/',
             COMMANDS: '/commands'
-        }
+        };
+        this.guild_id = guild_id;
+    }
 
+    async getCommands()
+    {
         let url;
-        if (guild_id === '')
+        if (this.guild_id === '')
         {
             url = this.endpoints.ENDPOINT + this.endpoints.COMMANDS;
         }
@@ -300,10 +262,9 @@ class Interaction
         this.authToken = bot_token;
         this.tokenPrefix = 'Bot ';
         this.bot_id = bot_id;
-        this.endpoints = {
+        this.endpoints =
+        {
             CALLBACK: `/interactions/${data.id}/${data.token}/callback`,
-            MESSAGES: `/webhooks/${this.bot_id}/${data.token}/messages/@original`,
-            FOLLOWUP: `/webhooks/${this.bot_id}/${data.token}`
         };
         this.client = client;
 
