@@ -267,8 +267,7 @@ class Interaction {
         };
         this.client = client;
 
-        this.packet = {
-            data: data,
+        this.packet = Object.assign({}, data, {
             reply: async (content, type = 4) => {
                 return new Promise(async (resolve) => {
                     const json = {
@@ -279,7 +278,7 @@ class Interaction {
                     this.client.requestHandler.request('POST', this.endpoints.CALLBACK, true, JSON.parse(JSON.stringify(json)));
                 });
             }
-        }
+        });
 
         return this.packet;
     }
