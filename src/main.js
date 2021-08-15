@@ -14,7 +14,8 @@ class Slash {
             ENDPOINT: `/applications/${this.bot_id}`,
             GUILD_ONLY: '/guilds/',
             COMMANDS: '/commands',
-        }
+        };
+        this.client = client;
     }
 
     /**
