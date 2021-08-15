@@ -160,7 +160,7 @@ class Create extends Slash {
                     },
                 })*/
 
-                this.client.requestHandler.request('POST', url, true, JSON.parse(JSON.stringify(json))).then(console.log())
+                this.client.requestHandler.request('POST', url, true, JSON.parse(JSON.stringify(json))).then(console.log('sas'))
             }
         })
     }
