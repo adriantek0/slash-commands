@@ -346,5 +346,4 @@ module.exports = {
     Delete,
     GetAll,
     Interaction,
-    Client: Client
 };
