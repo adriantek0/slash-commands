@@ -177,7 +177,7 @@ class Slash
         let url;
         if (guild_id === '')
         {
-            url = this.endpoints.ENDPOINT + this.endpoints.COMMANDS;
+            url = this.endpoints.ENDPOINT + this.endpoints.COMMANDS + '/' + command_id;;
         }
         else
         {
@@ -187,10 +187,10 @@ class Slash
         this.client.requestHandler.request('DELETE', url, true);
     }
 
-    async getAllCommands()
+    async getAllCommands(guild_id = '')
     {
         let url;
-        if (this.guild_id === '')
+        if (guild_id === '')
         {
             url = this.endpoints.ENDPOINT + this.endpoints.COMMANDS;
         }
