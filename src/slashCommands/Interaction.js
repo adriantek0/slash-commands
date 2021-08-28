@@ -27,7 +27,7 @@ class Interaction
                         'data': JSON.parse(JSON.stringify(content))
                     }
     
-                    this.client.requestHandler.request('POST', this.endpoints.CALLBACK, true, JSON.parse(JSON.stringify(json)));
+                    return this.client.requestHandler.request('POST', this.endpoints.CALLBACK, true, JSON.parse(JSON.stringify(json)));
                 }
             });
         }

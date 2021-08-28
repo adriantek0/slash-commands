@@ -128,7 +128,7 @@ class Slash
                 }
             }
 
-            this.client.requestHandler.request('POST', url, true, JSON.parse(JSON.stringify(json)));
+            return this.client.requestHandler.request('POST', url, true, JSON.parse(JSON.stringify(json)));
         }
     }
 
@@ -168,7 +168,7 @@ class Slash
                 }
             }
 
-            this.client.requestHandler.request('PATCH', url, true, JSON.parse(JSON.stringify(json)));
+            return this.client.requestHandler.request('PATCH', url, true, JSON.parse(JSON.stringify(json)));
         }
     }
 
@@ -184,7 +184,7 @@ class Slash
             url = this.endpoints.ENDPOINT + this.endpoints.GUILD_ONLY + guild_id + this.endpoints.COMMANDS + '/' + command_id;
         }
 
-        this.client.requestHandler.request('DELETE', url, true);
+        return this.client.requestHandler.request('DELETE', url, true);
     }
 
     async getAllCommands(guild_id = '')
@@ -199,7 +199,7 @@ class Slash
             url = this.endpoints.ENDPOINT + this.endpoints.GUILD_ONLY + guild_id + this.endpoints.COMMANDS;
         }
 
-        this.client.requestHandler.request('GET', url, true, JSON.parse(JSON.stringify(json)));
+        return this.client.requestHandler.request('GET', url, true, JSON.parse(JSON.stringify(json)));
     }
 }
 

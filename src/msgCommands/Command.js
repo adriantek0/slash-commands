@@ -35,7 +35,7 @@ class MsgCommand
         else
         {
             json = this.request;
-            this.client.requestHandler.request('POST', url, true, JSON.parse(JSON.stringify(json)));
+            return this.client.requestHandler.request('POST', url, true, JSON.parse(JSON.stringify(json)));
         }
     }
 }
