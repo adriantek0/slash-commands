@@ -30,7 +30,7 @@ class MsgCommand
 
         if (this.request.name === '')
         {
-            return 'Command Name is undefined';
+            throw new Error('command_name is undefined.');
         }
         else
         {

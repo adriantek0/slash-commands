@@ -30,13 +30,20 @@ class UsrCommand
 
         if (this.request.name === '')
         {
-            return 'Command Name is undefined';
+            throw new Error('command_name is undefined.');
         }
         else
         {
             json = this.request;
             return this.client.requestHandler.request('POST', url, true, JSON.parse(JSON.stringify(json)));
         }
+    }
+
+    async deleteCommand(command_id)
+    {
+        const url = this.endpoints.ENDPOINT + this.endpoints.COMMANDS + '/' + command_id;
+
+        return this.client.requestHandler.request('DELETE', url, true);
     }
 }
 

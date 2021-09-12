@@ -34,11 +34,11 @@ class Slash
     {
         if (name === '')
         {
-            return 'Option Name is undefined!';
+            throw new Error('option_name is undefined.');
         }
         else if (description === '')
         {
-            return 'Option Description is undefined!';
+            throw new Error('option_description is undefined.');
         }
             
         if (choices.length >= 1)
@@ -66,11 +66,11 @@ class Slash
     {
         if (name === '')
         {
-            return 'Option Name is undefined!';
+            throw new Error('option_name is undefined.');
         }
         else if (description === '')
         {
-            return 'Option Description is undefined!';
+            throw new Error('option_description is undefined.');
         }
             
         if (options.length < 1)
@@ -106,11 +106,11 @@ class Slash
 
         if (this.request.name === '')
         {
-            return 'Command Name is undefined';
+            throw new Error('command_name is undefined.');
         }
         else if (this.request.description === '')
         {
-            return 'Command Description is undefined';
+            throw new Error('command_description is undefined.');
         }
         else
         {
@@ -146,11 +146,11 @@ class Slash
 
         if (this.request.name === '')
         {
-            return 'Command Name is undefined';
+            throw new Error('command_name is undefined.');
         }
         else if (this.request.description === '')
         {
-            return 'Command Description is undefined';
+            throw new Error('command_description is undefined.');
         }
         else
         {
