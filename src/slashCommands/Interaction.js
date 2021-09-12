@@ -12,11 +12,11 @@ class Interaction
         this.client = client;
         this.packet;
 
-        if (data.type === 2)
+        if (data.type === 1)
         {
             this.packet = data;
         }
-        else if (data.type === 1)
+        else if (data.type === 2)
         {
             this.packet = Object.assign({}, data,
             {
