@@ -1,10 +1,7 @@
 class Interaction
 {
-    constructor(client, data, bot_token, bot_id)
+    constructor(client, data)
     {
-        this.authToken = bot_token;
-        this.tokenPrefix = 'Bot ';
-        this.bot_id = bot_id;
         this.endpoints =
         {
             CALLBACK: `/interactions/${data.id}/${data.token}/callback`,

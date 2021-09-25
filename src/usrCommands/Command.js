@@ -1,18 +1,15 @@
 class UsrCommand
 {
-    constructor(client, bot_token, bot_id)
+    constructor(client, bot_id)
     {
         this.request =
         {
             'name': '',
             'type': 2
         };
-        this.tokenPrefix = 'Bot ';
-        this.authToken = bot_token
-        this.bot_id = bot_id;
         this.endpoints =
         {
-            ENDPOINT: `/applications/${this.bot_id}`,
+            ENDPOINT: `/applications/${bot_id}`,
             COMMANDS: '/commands',
         };
         this.client = client;

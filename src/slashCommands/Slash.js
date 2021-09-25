@@ -1,6 +1,6 @@
 class Slash
 {
-    constructor(client, bot_token, bot_id)
+    constructor(client, bot_id)
     {
         this.request =
         {
@@ -8,12 +8,9 @@ class Slash
             'description': ''
         };
         this.options = [];
-        this.tokenPrefix = 'Bot ';
-        this.authToken = bot_token
-        this.bot_id = bot_id;
         this.endpoints =
         {
-            ENDPOINT: `/applications/${this.bot_id}`,
+            ENDPOINT: `/applications/${bot_id}`,
             GUILD_ONLY: '/guilds/',
             COMMANDS: '/commands',
         };

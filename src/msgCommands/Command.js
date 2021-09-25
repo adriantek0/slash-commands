@@ -1,18 +1,15 @@
 class MsgCommand
 {
-    constructor(client, bot_token, bot_id)
+    constructor(client, bot_id)
     {
         this.request =
         {
             'name': '',
             'type': 3
         };
-        this.tokenPrefix = 'Bot ';
-        this.authToken = bot_token
-        this.bot_id = bot_id;
         this.endpoints =
         {
-            ENDPOINT: `/applications/${this.bot_id}`,
+            ENDPOINT: `/applications/${bot_id}`,
             COMMANDS: '/commands',
         };
         this.client = client;
@@ -26,7 +23,6 @@ class MsgCommand
     async createCommand()
     {
         const url = this.endpoints.ENDPOINT + this.endpoints.COMMANDS;
-        let json;
 
         if (this.request.name === '')
         {
@@ -34,8 +30,7 @@ class MsgCommand
         }
         else
         {
-            json = this.request;
-            return this.client.requestHandler.request('POST', url, true, JSON.parse(JSON.stringify(json)));
+            return this.client.requestHandler.request('POST', url, true, JSON.parse(JSON.stringify(this.request)));
         }
     }
 }
