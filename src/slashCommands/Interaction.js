@@ -9,24 +9,33 @@ class Interaction
         this.client = client;
         this.packet;
 
-        if (data.type === 1)
-        {
-            this.packet = data;
+        const response = {
+            'type': 5,
         }
-        else if (data.type === 2)
+
+        // ACK an interaction and edit a response later, the user sees a loading state
+        this.client.requestHandler.request('POST', this.endpoints.CALLBACK, true, JSON.parse(JSON.stringify(response)));
+
+        switch(data.type)
         {
-            this.packet = Object.assign({}, data,
-            {
-                reply: async (content, type = 4) =>
+            case 1:
+                this.packet = data;
+                break;
+            case 2:
+                this.packet = Object.assign({}, data,
                 {
-                    const json = {
-                        'type': type,
-                        'data': JSON.parse(JSON.stringify(content))
+                    reply: async (content, type = 4) =>
+                    {
+                        const json = {
+                            'type': type,
+                            'data': JSON.parse(JSON.stringify(content))
+                        }
+            
+                        // respond to an interaction with a message
+                        this.client.requestHandler.request('POST', this.endpoints.CALLBACK, true, JSON.parse(JSON.stringify(json)));
                     }
-    
-                    return this.client.requestHandler.request('POST', this.endpoints.CALLBACK, true, JSON.parse(JSON.stringify(json)));
-                }
-            });
+                });
+                break;
         }
 
         return this.packet;

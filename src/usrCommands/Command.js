@@ -23,7 +23,6 @@ class UsrCommand
     async createCommand()
     {
         const url = this.endpoints.ENDPOINT + this.endpoints.COMMANDS;
-        let json;
 
         if (this.request.name === '')
         {
@@ -31,15 +30,13 @@ class UsrCommand
         }
         else
         {
-            json = this.request;
-            return this.client.requestHandler.request('POST', url, true, JSON.parse(JSON.stringify(json)));
+            return this.client.requestHandler.request('POST', url, true, JSON.parse(JSON.stringify(this.request)));
         }
     }
 
     async deleteCommand(command_id)
     {
         const url = this.endpoints.ENDPOINT + this.endpoints.COMMANDS + '/' + command_id;
-
         return this.client.requestHandler.request('DELETE', url, true);
     }
 }
