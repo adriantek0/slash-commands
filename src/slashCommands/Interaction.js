@@ -14,7 +14,7 @@ class Interaction
         }
 
         // ACK an interaction and edit a response later, the user sees a loading state
-        this.client.requestHandler.request('POST', this.endpoints.CALLBACK, true, JSON.parse(JSON.stringify(response)));
+        this.client.requestHandler.request('POST', this.endpoints.CALLBACK, true, JSON.parse(JSON.stringify(response))).catch((err: any) => console.error(err));;
 
         switch(data.type)
         {
