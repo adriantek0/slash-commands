@@ -5,6 +5,7 @@ class Interaction
         this.endpoints =
         {
             CALLBACK: `/interactions/${data.id}/${data.token}/callback`,
+            WEBHOOK: `/webhooks/${data.id}/{data.token}/messages/@original`,
         };
         this.client = client;
         this.packet;
@@ -32,7 +33,7 @@ class Interaction
                         }
             
                         // respond to an interaction with a message
-                        this.client.requestHandler.request('POST', this.endpoints.CALLBACK, true, JSON.parse(JSON.stringify(json))).catch(err => console.error(err));
+                        this.client.requestHandler.request('PATCH', this.endpoints.WEBHOOK, true, JSON.parse(JSON.stringify(json))).catch(err => console.error(err));
                     }
                 });
                 break;
