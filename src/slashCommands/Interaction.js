@@ -14,8 +14,8 @@ class Interaction
         }
 
         // ACK an interaction and edit a response later, the user sees a loading state
-        this.client.requestHandler.request('POST', this.endpoints.CALLBACK, true, JSON.parse(JSON.stringify(response))).catch(err => console.error(err));;
-
+        this.client.requestHandler.request('POST', this.endpoints.CALLBACK, true, JSON.parse(JSON.stringify(response))).catch(err => console.error(err));
+        
         switch(data.type)
         {
             case 1:
@@ -32,7 +32,7 @@ class Interaction
                         }
             
                         // respond to an interaction with a message
-                        this.client.requestHandler.request('PATCH', this.endpoints.CALLBACK, true, JSON.parse(JSON.stringify(json)));
+                        this.client.requestHandler.request('POST', this.endpoints.CALLBACK, true, JSON.parse(JSON.stringify(json))).catch(err => console.error(err));
                     }
                 });
                 break;
