@@ -32,7 +32,7 @@ class Interaction
                         }
             
                         // respond to an interaction with a message
-                        this.client.requestHandler.request('POST', this.endpoints.CALLBACK, true, JSON.parse(JSON.stringify(json)));
+                        this.client.requestHandler.request('PATCH', this.endpoints.CALLBACK, true, JSON.parse(JSON.stringify(json)));
                     }
                 });
                 break;
